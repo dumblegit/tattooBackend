@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const citaSchema = new Schema({
       tatuador:{type: String},
+      tatuaje:{type: String},
       cliente:{type:String},
       fechaCita:{type: Date},
       precio:{type: Number},
