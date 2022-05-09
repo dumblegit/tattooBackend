@@ -2,15 +2,15 @@ import express from 'express';
 import { json } from 'express/lib/response';
 const router = express.Router();
 
-// importar el modelo usuario
-import usuario from '../models/usuario';
+// importar el modelo cita
+import cita from '../models/cita';
 
-// Agregar un usuario
+// Agregar una cita
 router.post('/agregar', async(req, res) => {
   const body = req.body;  
   try {
-    const usuarioDB = await usuario.create(body);
-    res.status(200).json(usuarioDB); 
+    const citaDB = await cita.create(body);
+    res.status(200).json(citaDB); 
   } catch (error) {
     return res.status(500).json({
       mensaje: 'Ocurrio un error',
@@ -22,8 +22,8 @@ router.post('/agregar', async(req, res) => {
 router.get('/listar/:id', async(req, res) => {
   const _id = req.params.id;
   try {
-    const usuarioDB = await usuario.findOne({_id});
-    res.json(usuarioDB);
+    const citaDB = await cita.findOne({_id});
+    res.json(citaDB);
   } catch (error) {
     return res.status(400).json({
       mensaje: 'Ocurrio un error',
@@ -35,8 +35,8 @@ router.get('/listar/:id', async(req, res) => {
 // Get con todos los documentos
 router.get('/listar', async(req, res) => {
   try {
-    const usuarioDb = await usuario.find();
-    res.json(usuarioDb);
+    const citaDb = await cita.find();
+    res.json(citaDb);
   } catch (error) {
     return res.status(400).json({
       mensaje: 'Ocurrio un error',
@@ -44,18 +44,18 @@ router.get('/listar', async(req, res) => {
     })
   }
 });
-// Delete eliminar un usuario
+// Delete eliminar un cita
 router.delete('/borrar/:id', async(req, res) => {
   const _id = req.params.id;
   try {
-    const usuarioDb = await usuario.findByIdAndDelete({_id});
-    if(!usuarioDb){
+    const citaDb = await cita.findByIdAndDelete({_id});
+    if(!citaDb){
       return res.status(400).json({
         mensaje: 'No se encontró el id indicado',
         error
       })
     }
-    res.json(usuarioDb);  
+    res.json(citaDb);  
   } catch (error) {
     return res.status(400).json({
       mensaje: 'Ocurrio un error',
@@ -63,16 +63,16 @@ router.delete('/borrar/:id', async(req, res) => {
     })
   }
 });
-// Put actualizar un usuario
+// Put actualizar una cita
 router.put('/actualizar/:id', async(req, res) => {
   const _id = req.params.id;
   const body = req.body;
   try {
-    const usuarioDb = await usuario.findByIdAndUpdate(
+    const citaDb = await cita.findByIdAndUpdate(
       _id,
       body,
       {new: true});
-    res.json(usuarioDb);  
+    res.json(citaDb);  
   } catch (error) {
     return res.status(400).json({
       mensaje: 'Ocurrio un error',

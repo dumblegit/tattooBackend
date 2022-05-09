@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 import tatuaje from '../models/tatuaje';
 // Agregar un tatuaje
-router.post('/nuevo', async(req, res) => {
+router.post('/agregar', async(req, res) => {
   const body = req.body;  
   try {
     const tatuajeDB = await tatuaje.create(body);

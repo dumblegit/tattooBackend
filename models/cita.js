@@ -2,11 +2,11 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const citaSchema = new Schema({
-      idTatuaje:{type: String},
       tatuador:{type: String},
+      cliente:{type:String},
       fechaCita:{type: Date},
-      comision:{type: Number},
-      precio:{type: Number}
+      precio:{type: Number},
+      autorizado:{type: Boolean}
 });
 
 // Conversion a modelo

@@ -8,13 +8,6 @@ const usuarioSchema = new Schema({
   fotoPerfil:{type: String},
   usuario:{type: String},
   password:{type: String},
-  citas: Array({
-      idTatuaje:{type: String},
-      tatuador:{type: String},
-      fechaCita:{type: Date},
-      comision:{type: Number},
-      precio:{type: Number}
-  })
 });
 
 // Conversion a modelo
