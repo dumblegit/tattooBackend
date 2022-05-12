@@ -1,5 +1,6 @@
 import express from 'express';
 import { json } from 'express/lib/response';
+import multer from '../app';
 const router = express.Router();
 
 // importar el modelo usuario
@@ -10,6 +11,8 @@ router.post('/agregar', async(req, res) => {
   const body = req.body;  
   try {
     const usuarioDB = await usuario.create(body);
+    agregarImagen(req, req.body.file);
+    usuarioDB.fotoPerfil=body.file.filename;
     res.status(200).json(usuarioDB); 
   } catch (error) {
     return res.status(500).json({
@@ -80,5 +83,33 @@ router.put('/actualizar/:id', async(req, res) => {
     })
   }
 });
+function agregarImagen(req, file){
+
+  //Filtro imagenes
+  const fileFilter=function(req,file,cb){
+  
+    const allowedTypes=["image/jpg","image/jpeg","image/png",];
+  
+    if(!allowedTypes.includes(file.mimetype)){
+  
+      const error=new Error("Solo archivos tipo jpg, jpeg y png");
+      error.code="LIMIT_FILE_TYPES";
+      return cb(error,false);
+    }
+  
+    cb(null,true);
+  }
+  
+  //Subida a carpeta
+  const storage=multer.diskStorage({
+    destination:'./images',
+    filename:(req,file,cb)=>{
+      cb(null,file.originalname);
+    }
+  });
+  const files=[];
+  
+  const upload=multer({storage,fileFilter});
+}
 // Exportamos la configuración de express app
 module.exports = router;

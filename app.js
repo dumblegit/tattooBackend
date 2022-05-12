@@ -5,6 +5,7 @@ import path from 'path';
 
 const app = express();
 const mongoose = require('mongoose');
+const multer=require('multer');
 
 const uri = 'mongodb+srv://chema_roberto:efRtkTvqXtLkb2Dc@cluster0.eswdh.mongodb.net/tattoodb?retryWrites=true&w=majority';
 const options = {useNewUrlParser: true};
