@@ -7,6 +7,7 @@ const upload = require('./subirFoto');
 import usuario from '../models/usuario';
 
 // Agregar un usuario
+router.post('/imagen', upload.upload);
 router.post('/agregar',upload.upload,
 async(req, res) => {
   const body = req.body; 
