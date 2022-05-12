@@ -3,9 +3,13 @@ import morgan from 'morgan';
 import cors from 'cors';
 import path from 'path';
 
-const app = express();
+
+const app = express(),
+  bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-const multer=require('multer');
+
+
+
 
 const uri = 'mongodb+srv://chema_roberto:efRtkTvqXtLkb2Dc@cluster0.eswdh.mongodb.net/tattoodb?retryWrites=true&w=majority';
 const options = {useNewUrlParser: true};
@@ -21,6 +25,7 @@ mongoose.connect(uri, options).then(
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use('/tatuajes', require('./routes/tatuaje'));

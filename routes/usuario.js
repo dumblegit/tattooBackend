@@ -1,6 +1,6 @@
 import express from 'express';
 import { json } from 'express/lib/response';
-import multer from '../app';
+const multer = require('multer');
 const router = express.Router();
 
 // importar el modelo usuario
@@ -9,10 +9,15 @@ import usuario from '../models/usuario';
 // Agregar un usuario
 router.post('/agregar', async(req, res) => {
   const body = req.body;  
+  // console.log(body.fotoPerfil);
+  const fichero = req.formdata;
+  console.log(fichero);
   try {
     const usuarioDB = await usuario.create(body);
-    agregarImagen(req, req.body.file);
+    // console.log(usuarioDB);
+    agregarImagen(req, fichero);
     usuarioDB.fotoPerfil=body.file.filename;
+    // console.log(usuarioDB);
     res.status(200).json(usuarioDB); 
   } catch (error) {
     return res.status(500).json({
@@ -107,8 +112,6 @@ function agregarImagen(req, file){
       cb(null,file.originalname);
     }
   });
-  const files=[];
-  
   const upload=multer({storage,fileFilter});
 }
 // Exportamos la configuración de express app
