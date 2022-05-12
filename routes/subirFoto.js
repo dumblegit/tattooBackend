@@ -1,11 +1,13 @@
 const multer = require('multer')
+var nombre;
 
 const storage = multer.diskStorage({
       destination: function (req,file,cb) {
         cb(null,'imagenes')
       },
       filename: function (req,file,cb) {
-        cb(null,`${Date.now()}+${file.originalname}`)
+        nombre=`${Date.now()}+${file.originalname}`;
+        cb(null,nombre)
       }
     })
 
@@ -14,5 +16,5 @@ const storage = multer.diskStorage({
     exports.upload = upload.single('fotoPerfil')
   
     exports.uploadFile = (req, res) => {
-      res.send({data : "hola"})
+      res.send({data : nombre})
     }
