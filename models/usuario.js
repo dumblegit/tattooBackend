@@ -8,6 +8,7 @@ const usuarioSchema = new Schema({
   fotoPerfil:{type: String},
   usuario:{type: String},
   password:{type: String},
+  aboutYou:{type: String}
 });
 
 // Conversion a modelo

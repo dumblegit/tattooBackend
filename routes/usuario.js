@@ -1,16 +1,35 @@
 import express from 'express';
 import { json } from 'express/lib/response';
+import path from 'path';
+var nombre;
 const multer = require('multer');
 const router = express.Router();
-const upload = require('./subirFoto');
+//const upload = require('./subirFoto');
 // importar el modelo usuario
 import usuario from '../models/usuario';
 
+//Agregar foto
+router.post('/foto', (req, res) => {
+  uploadImage(req, res, (err) => {
+      if (err) {
+          err.message = 'El archivo es demasiado pesado';
+          return res.send(err);
+      }
+      res.send(nombre);
+  });
+});
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, '../imagenes'),
+  filename:  (req, file, cb) => {
+      nombre=`${Date.now()}+${file.originalname}`;
+      cb(null, nombre);
+  }
+})
+const uploadImage = multer({
+  storage,
+  limits: { fileSize: 1048576 }
+}).single('imagenes');
 // Agregar un usuario
-router.post('/foto',
-  upload.upload,
-  upload.uploadFile
-);
 router.post('/agregar',
 async(req, res) => {
   const body = req.body; 
