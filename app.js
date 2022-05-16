@@ -6,11 +6,9 @@ import path from 'path';
 
 const app = express();
 const mongoose = require('mongoose');
+require('dotenv').config({path:'./.env'});
 
-
-
-
-const uri = 'mongodb+srv://chema_roberto:efRtkTvqXtLkb2Dc@cluster0.eswdh.mongodb.net/tattoodb?retryWrites=true&w=majority';
+const uri = `mongodb+srv://${process.env.USUARIO}:${process.env.PASSWORD}@cluster0.eswdh.mongodb.net/${process.env.NAMEDB}?retryWrites=true&w=majority`
 const options = {useNewUrlParser: true};
 
 // Or using promises
@@ -41,5 +39,5 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('puerto', process.env.PORT || 3000);
 app.listen(app.get('puerto'), () => {
-  console.log('Example app listening on port'+ app.get('puerto'));
+  console.log('Server listening on port'+ app.get('puerto'));
 });
