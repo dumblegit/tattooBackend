@@ -2,6 +2,7 @@ const multer = require('multer')
 var nombre;
 
 const storage = multer.diskStorage({
+      
       destination: function (req,file,cb) {
         cb(null,'imagenes')
       },
@@ -11,7 +12,7 @@ const storage = multer.diskStorage({
       }
     })
 
-    const upload = multer({ storage: storage, limits: {fileSize: maxSize}})
+    const upload = multer({ storage: storage, limits: {fileSize: 1000000}})
 
     exports.upload = upload.single('fotoPerfil')
   

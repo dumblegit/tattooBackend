@@ -5,7 +5,6 @@ import path from 'path';
 
 
 const app = express();
-const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 
 
@@ -25,16 +24,15 @@ mongoose.connect(uri, options).then(
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json({limit: '5mb'}));
-app.use(bodyParser.json());
-app.use(express.urlencoded({limit: '5mb', extended: true }));
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/tatuajes', require('./routes/tatuaje'));
 app.use('/usuarios', require('./routes/usuario'));
 app.use('/citas', require('./routes/cita'));
 // Rutas
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
 
 // Middleware para Vue.js router modo history
 const history = require('connect-history-api-fallback');
