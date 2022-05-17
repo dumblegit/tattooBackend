@@ -4,31 +4,10 @@ import path from 'path';
 var nombre;
 const multer = require('multer');
 const router = express.Router();
-//const upload = require('./subirFoto');
 // importar el modelo usuario
 import usuario from '../models/usuario';
 
-//Agregar foto
-router.post('/foto', (req, res) => {
-  uploadImage(req, res, (err) => {
-      if (err) {
-          err.message = 'El archivo es demasiado pesado';
-          return res.send(err);
-      }
-      res.send(nombre);
-  });
-});
-const storage = multer.diskStorage({
-  destination: path.join(__dirname, '../imagenes'),
-  filename:  (req, file, cb) => {
-      nombre=`${Date.now()}+${file.originalname}`;
-      cb(null, nombre);
-  }
-})
-const uploadImage = multer({
-  storage,
-  limits: { fileSize: 1048576 }
-}).single('fotoPerfil');
+
 // Agregar un usuario
 router.post('/agregar',
 async(req, res) => {
@@ -105,5 +84,47 @@ router.put('/actualizar/:id', async(req, res) => {
     })
   }
 });
+
+//Agregar foto
+router.post('/agregarFoto', (req, res) => {
+  uploadImage(req, res, (err) => {
+      if (err) {
+          err.message = 'El archivo es demasiado pesado';
+          return res.send(err);
+      }
+      res.send(nombre);
+  });
+});
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, '../images'),
+  filename:  (req, file, cb) => {
+      nombre=`${Date.now()}+${file.originalname}`;
+      cb(null, nombre);
+  }
+})
+const uploadImage = multer({
+  storage,
+  limits: { fileSize: 1048576 }
+}).single('fotoPerfil');
+
+//Eliminar foto
+
+router.put('/eliminarFoto/:id', async(req,res) => {
+  const _id = req.params.id;
+  const body = req.body;
+  body.fotoPerfil="";
+  try {
+    const usuarioDb = await usuario.findByIdAndUpdate(
+      _id,
+      body,
+      {new: true});
+    res.json(usuarioDb);  
+  } catch (error) {
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
+})
 // Exportamos la configuración de express app
 module.exports = router;
