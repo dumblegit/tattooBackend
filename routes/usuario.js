@@ -99,7 +99,7 @@ router.post('/agregarFoto', (req, res) => {
 const storage = multer.diskStorage({
   destination: path.join(__dirname, '../images'),
   filename:  (req, file, cb) => {
-      nombre=`${Date.now()}+${file.originalname}`;
+      nombre=`${Date.now()}${file.originalname}`;
       cb(null, nombre);
   }
 })
@@ -119,20 +119,22 @@ router.put('/eliminarFoto/:id', async(req,res) => {
     console.log('File removed')
   } catch(err) {
     console.error('Something wrong happened removing the file', err)
-  }
-  body.fotoPerfil="";
-  try {
-    const usuarioDb = await usuario.findByIdAndUpdate(
-      _id,
-      body,
-      {new: true});
-    res.json(usuarioDb);  
-  } catch (error) {
-    return res.status(400).json({
-      mensaje: 'Ocurrio un error',
-      error
-    })
-  }
+  } 
+    try {
+      body.fotoPerfil="";
+      const usuarioDb = await usuario.findByIdAndUpdate(
+        _id,
+        body,
+        {new: true});
+      res.json(usuarioDb);  
+    } catch (error) {
+      return res.status(400).json({
+        mensaje: 'Ocurrio un error',
+        error
+      })
+    }
+  
+  
 })
 // Exportamos la configuración de express app
 module.exports = router;
