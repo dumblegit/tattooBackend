@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const imagenSchema = new Schema({
-  nombre: {type: String},
+  img: {type: String},
 });
 
 // Conversion a modelo
