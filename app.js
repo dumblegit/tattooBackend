@@ -27,6 +27,8 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('imagenes'));
+app.use('/', require('./routes/imagen'));
 app.use('/tatuajes', require('./routes/tatuaje'));
 app.use('/usuarios', require('./routes/usuario'));
 app.use('/citas', require('./routes/cita'));

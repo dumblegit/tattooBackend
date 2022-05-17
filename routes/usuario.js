@@ -1,6 +1,7 @@
 import express from 'express';
 import { json } from 'express/lib/response';
 import path from 'path';
+const fs = require('fs');
 var nombre;
 const multer = require('multer');
 const router = express.Router();
@@ -112,6 +113,13 @@ const uploadImage = multer({
 router.put('/eliminarFoto/:id', async(req,res) => {
   const _id = req.params.id;
   const body = req.body;
+  const foto = body.fotoPerfil;
+  try {
+    fs.unlinkSync('./images/'+foto);
+    console.log('File removed')
+  } catch(err) {
+    console.error('Something wrong happened removing the file', err)
+  }
   body.fotoPerfil="";
   try {
     const usuarioDb = await usuario.findByIdAndUpdate(
