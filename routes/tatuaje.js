@@ -1,6 +1,10 @@
 import express from 'express';
 const router = express.Router();
 import tatuaje from '../models/tatuaje';
+const fs = require('fs');
+var nombre;
+const multer = require('multer');
+import path from 'path';
 // Agregar un tatuaje
 router.post('/agregar', async(req, res) => {
   const body = req.body;  
@@ -104,11 +108,31 @@ router.put('/nuevaImagen/:id', async(req, res) => {
       error
     })
   }
+  uploadImage(req, res, (err) => {
+    if (err) {
+        err.message = 'El archivo es demasiado pesado';
+        return res.send(err);
+    }
+    res.send(nombre);
+});
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, '../images'),
+  filename:  (req, file, cb) => {
+      nombre=`${Date.now()}${file.originalname}`;
+      cb(null, nombre);
+  }
+})
+const uploadImage = multer({
+  storage,
+  limits: { fileSize: 1048576 }
+}).single('fotoPerfil');
 });
 //Quitar una imagen
 router.put('/borrarImagen/:id', async(req, res) => {
   const _id = req.params.id;
+  console.log(req.body)
   const imagen = req.body.imagen;
+  console.log(imagen);
   try {
     const tatuajeDB = await tatuaje.findByIdAndUpdate(
       _id,
@@ -121,6 +145,12 @@ router.put('/borrarImagen/:id', async(req, res) => {
       error
     })
   }
+  try {
+    fs.unlinkSync('./images/'+imagen);
+    console.log('File removed')
+  } catch(err) {
+    console.error('Something wrong happened removing the file', err)
+  } 
 });
 // Exportamos la configuración de express app
 module.exports = router;

@@ -1,5 +1,4 @@
 import express from 'express';
-import { json } from 'express/lib/response';
 import path from 'path';
 const fs = require('fs');
 var nombre;
@@ -40,8 +39,32 @@ router.get('/listar/:id', async(req, res) => {
 // Get con todos los documentos
 router.get('/listar', async(req, res) => {
   try {
-    const usuarioDb = await usuario.find();
-    res.json(usuarioDb);
+    const usuariosDb = await usuario.find();
+    res.json(usuariosDb);
+  } catch (error) {
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
+});
+// Listar clientes
+router.get('/clientes', async(req, res) => {
+  try {
+    const usuariosDb = await usuario.find({tatuador:false});
+    res.json(usuariosDb);
+  } catch (error) {
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
+});
+//Listar tatuadores
+router.get('/tatuadores', async(req, res) => {
+  try {
+    const usuariosDb = await usuario.find({tatuador:true});
+    res.json(usuariosDb);
   } catch (error) {
     return res.status(400).json({
       mensaje: 'Ocurrio un error',

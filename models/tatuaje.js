@@ -5,7 +5,7 @@ const tatuajeSchema = new Schema({
   nombre: {type: String, required: [true, 'Nombre obligatorio']},
   tatuado:{type: Boolean, default: false},
   autor:{type: String},
-  imagenes: Array({type: String})
+  imagenes: Array({type: String}),
 });
 
 // Conversion a modelo
