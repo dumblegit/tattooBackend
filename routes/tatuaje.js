@@ -5,6 +5,7 @@ const fs = require('fs');
 var nombre;
 const multer = require('multer');
 import path from 'path';
+import { route } from 'express/lib/application';
 // Agregar un tatuaje
 router.post('/agregar', async(req, res) => {
   const body = req.body;  
@@ -93,6 +94,14 @@ router.get('/imagenes/:id', async(req, res) => {
   }
 });
 ///Agregar una imagen
+router.post('/agregarFoto', async(req, res) => {
+  uploadImage(req, res, (err) => {
+    if (err) {
+        err.message = 'El archivo es demasiado pesado';
+        return res.send(err);
+    }
+    res.send(nombre);
+  })});
 router.put('/nuevaImagen/:id', async(req, res) => {
   const _id = req.params.id;
   const imagen = req.body.imagen;
@@ -108,13 +117,7 @@ router.put('/nuevaImagen/:id', async(req, res) => {
       error
     })
   }
-  uploadImage(req, res, (err) => {
-    if (err) {
-        err.message = 'El archivo es demasiado pesado';
-        return res.send(err);
-    }
-    res.send(nombre);
-});
+  });
 const storage = multer.diskStorage({
   destination: path.join(__dirname, '../images'),
   filename:  (req, file, cb) => {
@@ -124,9 +127,8 @@ const storage = multer.diskStorage({
 })
 const uploadImage = multer({
   storage,
-  limits: { fileSize: 1048576 }
-}).single('fotoPerfil');
-});
+  limits: { fileSize: 10485760 }
+}).single('imagen');
 //Quitar una imagen
 router.put('/borrarImagen/:id', async(req, res) => {
   const _id = req.params.id;
