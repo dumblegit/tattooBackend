@@ -132,9 +132,7 @@ const uploadImage = multer({
 //Quitar una imagen
 router.put('/borrarImagen/:id', async(req, res) => {
   const _id = req.params.id;
-  console.log(req.body)
   const imagen = req.body.imagen;
-  console.log(imagen);
   try {
     const tatuajeDB = await tatuaje.findByIdAndUpdate(
       _id,
