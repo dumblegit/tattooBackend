@@ -22,6 +22,26 @@ async(req, res) => {
     })
   }
 });
+//Comprobar si un nickname existe
+router.put('/comprobarUsuario',
+async(req, res) => {
+  const body = req.body; 
+  try {
+    if(await usuario.findOne({usuario : body.usuario})!=null){
+      var existe={"existe" : true};
+      res.json(existe);
+    }else{
+      var existe={"existe" : false};
+      res.json(existe);
+    }
+    
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
+});
 // Get con parámetros
 router.get('/listar/:id', async(req, res) => {
   const _id = req.params.id;
