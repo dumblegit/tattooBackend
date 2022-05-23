@@ -24,7 +24,7 @@ async(req, res) => {
   }
 });
 //Comprobar si un nickname existe
-router.put('/comprobarUsuario',
+router.post('/comprobarUsuario',
 async(req, res) => {
   const body = req.body; 
   try {
