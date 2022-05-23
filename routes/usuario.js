@@ -1,4 +1,5 @@
 import express from 'express';
+import { render } from 'express/lib/response';
 import path from 'path';
 const fs = require('fs');
 var nombre;
@@ -35,6 +36,30 @@ async(req, res) => {
       res.json(existe);
     }
     
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
+});
+//Inicio sesión
+router.post('/inicioSesion',
+async(req, res) => {
+  const body = req.body; 
+  try{
+  const usuarioDB = await usuario.findOne({usuario : body.usuario})
+  if(body.password==usuarioDB.password){
+    var creedenciales={
+      "id" : usuarioDB._id,
+      "nombre" : usuarioDB.nombre,
+      "tatuador" : usuarioDB.tatuador,
+      "usuario" : usuarioDB.usuario
+    }
+    res.json(creedenciales);
+  }else{
+    res.json({"inicioFallido" : true});
+  }
   } catch (error) {
     return res.status(500).json({
       mensaje: 'Ocurrio un error',
