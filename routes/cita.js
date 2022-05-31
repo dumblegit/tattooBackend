@@ -44,6 +44,18 @@ router.get('/listar', async(req, res) => {
     })
   }
 });
+router.get('/usuario/:id', async(req, res) => {
+  try {
+    const cliente = req.params.id;
+    const citasDb = await cita.find({cliente: cliente});
+    res.json(citasDb);
+  } catch (error) {
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
+});
 // Delete eliminar un cita
 router.delete('/borrar/:id', async(req, res) => {
   const _id = req.params.id;
