@@ -5,6 +5,7 @@ const fs = require('fs');
 var nombre;
 const multer = require('multer');
 import path from 'path';
+import usuario from '../models/usuario';
 import { route } from 'express/lib/application';
 // Agregar un tatuaje
 router.post('/agregar', async(req, res) => {
@@ -151,6 +152,23 @@ router.put('/borrarImagen/:id', async(req, res) => {
   } catch(err) {
     console.error('Something wrong happened removing the file', err)
   } 
+});
+/*Datos para mostrar a la hora de pedir una cita */
+router.get('/datosCita', async(req, res) => {
+  try {
+    const tatuajeAux = req.query.t
+    const autorAux = req.query.a
+    const tattoo = await tatuaje.findOne({tatuajeAux});
+    const autor = await usuario.findOne({autorAux});
+    res.json({"tatuaje" : tattoo.nombre,
+              "precio" : tattoo.precio,
+              "autor" :  autor.nombre});
+  } catch (error) {
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
 });
 // Exportamos la configuración de express app
 module.exports = router;
