@@ -44,6 +44,7 @@ router.get('/listar', async(req, res) => {
     })
   }
 });
+//Todas las citas de un usuario
 router.get('/usuario/:id', async(req, res) => {
   try {
     const cliente = req.params.id;
