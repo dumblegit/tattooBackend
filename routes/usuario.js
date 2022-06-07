@@ -174,7 +174,7 @@ const storage = multer.diskStorage({
 })
 const uploadImage = multer({
   storage,
-  limits: { fileSize: 10485760 }
+  limits: { fileSize: 4194304 }
 }).single('fotoPerfil');
 
 //Eliminar foto
