@@ -93,6 +93,7 @@ router.get('/listar', async(req, res) => {
     })
   }
 });
+
 // Listar clientes
 router.get('/clientes', async(req, res) => {
   try {
@@ -184,7 +185,6 @@ router.put('/eliminarFoto/:id', async(req,res) => {
   const foto = body.fotoPerfil;
   try {
     fs.unlinkSync('./images/'+foto);
-    console.log('File removed')
   } catch(err) {
     console.error('Something wrong happened removing the file', err)
   } 

@@ -148,11 +148,11 @@ router.put('/borrarImagen/:id', async(req, res) => {
   }
   try {
     fs.unlinkSync('./images/'+imagen);
-    console.log('File removed')
   } catch(err) {
     console.error('Something wrong happened removing the file', err)
   } 
 });
+
 /*Datos para mostrar a la hora de pedir una cita */
 router.get('/datosCita', async(req, res) => {
   try {
