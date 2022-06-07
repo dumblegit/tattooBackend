@@ -158,8 +158,8 @@ router.get('/datosCita', async(req, res) => {
   try {
     const tatuajeAux = req.query.t
     const autorAux = req.query.a
-    const tattoo = await tatuaje.findOne({tatuajeAux});
-    const autor = await usuario.findOne({autorAux});
+    const tattoo = await tatuaje.findOne({_id : tatuajeAux});
+    const autor = await usuario.findOne({_id : autorAux});
     res.json({"tatuaje" : tattoo.nombre,
               "precio" : tattoo.precio,
               "autor" :  autor.nombre});
