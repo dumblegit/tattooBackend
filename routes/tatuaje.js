@@ -37,7 +37,14 @@ router.get('/listar/:id', async(req, res) => {
 router.get('/listar', async(req, res) => {
   try {
     const tatuajeDb = await tatuaje.find();
-    res.json(tatuajeDb);
+    const usuarioDB = await usuario.find();
+    var usuarios=[];
+    for (var i = 0; i<usuarioDB.length; i++) {
+      if(usuarioDB[i].tatuador){
+        usuarios.push({"_id" : usuarioDB[i]._id, "nombre" : usuarioDB[i].nombre})
+      }
+    }
+    res.json({ "tatuajes" : tatuajeDb, "nombres" : usuarios});
   } catch (error) {
     return res.status(400).json({
       mensaje: 'Ocurrio un error',
