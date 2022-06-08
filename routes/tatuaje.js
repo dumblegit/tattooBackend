@@ -1,12 +1,13 @@
 import express from 'express';
-const router = express.Router();
 import tatuaje from '../models/tatuaje';
+import path from 'path';
+import usuario from '../models/usuario';
+
+const router = express.Router();
 const fs = require('fs');
 var nombre;
 const multer = require('multer');
-import path from 'path';
-import usuario from '../models/usuario';
-import { route } from 'express/lib/application';
+
 // Agregar un tatuaje
 router.post('/agregar', async(req, res) => {
   const body = req.body;  
@@ -20,6 +21,7 @@ router.post('/agregar', async(req, res) => {
     })
   }
 });
+
 // Listar un tatuaje
 router.get('/listar/:id', async(req, res) => {
   const _id = req.params.id;
@@ -33,6 +35,7 @@ router.get('/listar/:id', async(req, res) => {
     })
   }
 });
+
 // Listar todos los tatuajes
 router.get('/listar', async(req, res) => {
   try {
@@ -52,6 +55,7 @@ router.get('/listar', async(req, res) => {
     })
   }
 });
+
 // Eliminar un tatuaje
 router.delete('/borrar/:id', async(req, res) => {
   const _id = req.params.id;
@@ -71,6 +75,7 @@ router.delete('/borrar/:id', async(req, res) => {
     })
   }
 });
+
 // Actualizar un tatuaje
 router.put('/actualizar/:id', async(req, res) => {
   const _id = req.params.id;
@@ -88,28 +93,8 @@ router.put('/actualizar/:id', async(req, res) => {
     })
   }
 });
-//Mostrar imagenes de un tatuaje
-router.get('/imagenes/:id', async(req, res) => {
-  const _id = req.params.id;
-  try {
-    const tatuajeDB = await tatuaje.findOne({_id});
-    res.json(tatuajeDB.imagenes);
-  } catch (error) {
-    return res.status(400).json({
-      mensaje: 'Ocurrio un error',
-      error
-    })
-  }
-});
-///Agregar una imagen
-router.post('/agregarFoto', async(req, res) => {
-  uploadImage(req, res, (err) => {
-    if (err) {
-        err.message = 'El archivo es demasiado pesado';
-        return res.send(err);
-    }
-    res.send(nombre);
-  })});
+
+//Agrega el nombre de una imagen a un tatuaje
 router.put('/nuevaImagen/:id', async(req, res) => {
   const _id = req.params.id;
   const imagen = req.body.imagen;
@@ -126,6 +111,18 @@ router.put('/nuevaImagen/:id', async(req, res) => {
     })
   }
   });
+
+///Agrega un archivo de una imagen
+router.post('/agregarFoto', async(req, res) => {
+  uploadImage(req, res, (err) => {
+    if (err) {
+        err.message = 'El archivo es demasiado pesado';
+        return res.send(err);
+    }
+    res.send(nombre);
+  })});
+
+//Gestiona el nombre y ubicacion de la imagen
 const storage = multer.diskStorage({
   destination: path.join(__dirname, '../images'),
   filename:  (req, file, cb) => {
@@ -133,10 +130,13 @@ const storage = multer.diskStorage({
       cb(null, nombre);
   }
 })
+
+//Limita y define donde se subirá una unica imagen
 const uploadImage = multer({
   storage,
   limits: { fileSize: 4194304 }
 }).single('imagen');
+
 //Quitar una imagen
 router.put('/borrarImagen/:id', async(req, res) => {
   const _id = req.params.id;
@@ -160,7 +160,7 @@ router.put('/borrarImagen/:id', async(req, res) => {
   } 
 });
 
-/*Datos para mostrar a la hora de pedir una cita */
+//Datos para mostrar a la hora de pedir una cita
 router.get('/datosCita', async(req, res) => {
   try {
     const tatuajeAux = req.query.t
@@ -177,5 +177,6 @@ router.get('/datosCita', async(req, res) => {
     })
   }
 });
+
 // Exportamos la configuración de express app
 module.exports = router;

@@ -1,9 +1,7 @@
 import express from 'express';
-import { json } from 'express/lib/response';
+import cita from '../models/cita';
 const router = express.Router();
 
-// importar el modelo cita
-import cita from '../models/cita';
 
 // Agregar una cita
 router.post('/agregar', async(req, res) => {
@@ -18,7 +16,8 @@ router.post('/agregar', async(req, res) => {
     })
   }
 });
-// Get con parámetros
+
+// Lista una cita
 router.get('/listar/:id', async(req, res) => {
   const _id = req.params.id;
   try {
@@ -32,7 +31,7 @@ router.get('/listar/:id', async(req, res) => {
   }
 });
 
-// Get con todos los documentos
+// Lista todas las citas
 router.get('/listar', async(req, res) => {
   try {
     const citaDb = await cita.find();
@@ -44,6 +43,7 @@ router.get('/listar', async(req, res) => {
     })
   }
 });
+
 //Todas las citas de un usuario
 router.get('/usuario/:id', async(req, res) => {
   try {
@@ -57,7 +57,8 @@ router.get('/usuario/:id', async(req, res) => {
     })
   }
 });
-// Delete eliminar un cita
+
+// Eliminar un cita
 router.delete('/borrar/:id', async(req, res) => {
   const _id = req.params.id;
   try {
@@ -76,7 +77,8 @@ router.delete('/borrar/:id', async(req, res) => {
     })
   }
 });
-// Put actualizar una cita
+
+// Actualizar una cita
 router.put('/actualizar/:id', async(req, res) => {
   const _id = req.params.id;
   const body = req.body;
@@ -93,5 +95,6 @@ router.put('/actualizar/:id', async(req, res) => {
     })
   }
 });
+
 // Exportamos la configuración de express app
 module.exports = router;
