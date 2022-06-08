@@ -1,13 +1,12 @@
 import express from 'express';
-import { render } from 'express/lib/response';
 import path from 'path';
-const fs = require('fs');
-var nombre;
-const multer = require('multer');
-const router = express.Router();
-// importar el modelo usuario
 import usuario from '../models/usuario';
 
+const fs = require('fs');
+const multer = require('multer');
+const router = express.Router();
+
+var nombre;
 
 // Agregar un usuario
 router.post('/agregar',
@@ -23,6 +22,7 @@ async(req, res) => {
     })
   }
 });
+
 //Comprobar si un nickname existe
 router.post('/comprobarUsuario',
 async(req, res) => {
@@ -43,6 +43,7 @@ async(req, res) => {
     })
   }
 });
+
 //Inicio sesión
 router.post('/inicioSesion',
 async(req, res) => {
@@ -67,7 +68,8 @@ async(req, res) => {
     })
   }
 });
-// Get con parámetros
+
+// Listar un usuario
 router.get('/listar/:id', async(req, res) => {
   const _id = req.params.id;
   try {
@@ -81,7 +83,7 @@ router.get('/listar/:id', async(req, res) => {
   }
 });
 
-// Get con todos los documentos
+// Listar todos los usuarios
 router.get('/listar', async(req, res) => {
   try {
     const usuariosDb = await usuario.find();
@@ -106,6 +108,7 @@ router.get('/clientes', async(req, res) => {
     })
   }
 });
+
 //Listar tatuadores
 router.get('/tatuadores', async(req, res) => {
   try {
@@ -118,7 +121,8 @@ router.get('/tatuadores', async(req, res) => {
     })
   }
 });
-// Delete eliminar un usuario
+
+// Eliminar un usuario
 router.delete('/borrar/:id', async(req, res) => {
   const _id = req.params.id;
   try {
@@ -137,7 +141,8 @@ router.delete('/borrar/:id', async(req, res) => {
     })
   }
 });
-// Put actualizar un usuario
+
+// Actualizar un usuario
 router.put('/actualizar/:id', async(req, res) => {
   const _id = req.params.id;
   const body = req.body;
@@ -165,6 +170,8 @@ router.post('/agregarFoto', (req, res) => {
       res.send(nombre);
   });
 });
+
+//Gestiona el nombre y ubicacion de la imagen
 const storage = multer.diskStorage({
   destination: path.join(__dirname, '../images'),
   filename:  (req, file, cb) => {
@@ -172,13 +179,14 @@ const storage = multer.diskStorage({
       cb(null, nombre);
   }
 })
+
+//Limita y define donde se subirá una unica imagen
 const uploadImage = multer({
   storage,
   limits: { fileSize: 4194304 }
 }).single('fotoPerfil');
 
 //Eliminar foto
-
 router.put('/eliminarFoto/:id', async(req,res) => {
   const _id = req.params.id;
   const body = req.body;
@@ -201,8 +209,7 @@ router.put('/eliminarFoto/:id', async(req,res) => {
         error
       })
     }
-  
-  
 })
+
 // Exportamos la configuración de express app
 module.exports = router;
